@@ -69,7 +69,7 @@
 
     // 异步请求获取用户信息
     // fetch('http://www.ggcoding.top:9090/users') // 替换为实际的路由地址
-    fetch('/users') // 替换为实际的路由地址
+    fetch('/v1/users') // 替换为实际的路由地址
         .then(response => response.json())
         .then(users => {
             const table = document.getElementById('user-table');
