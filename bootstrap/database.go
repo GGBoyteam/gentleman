@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"errors"
 	"fmt"
+	"gentleman/app/models/user"
 	"gentleman/pkg/config"
 	"gentleman/pkg/database"
 	"time"
@@ -20,6 +21,8 @@ func SetupDB() {
 	switch config.Get("database.connection") {
 	case "mysql":
 		// 构建 DSN 信息
+		// Replace the connection details with your MySQL database configuration
+		//dsn := "root:wxl7756212@tcp(localhost:3306)/leetcode" # 服务器上的代码
 		dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=%v&parseTime=True&multiStatements=true&loc=Local",
 			config.Get("database.mysql.username"),
 			config.Get("database.mysql.password"),
@@ -48,4 +51,6 @@ func SetupDB() {
 	database.SQLDB.SetMaxIdleConns(config.GetInt("database.mysql.max_idle_connections"))
 	// 设置每个链接的过期时间
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.mysql.max_life_seconds")) * time.Second)
+
+	database.DB.AutoMigrate(&user.User{})
 }

@@ -2,10 +2,9 @@
 package routes
 
 import (
+	"gentleman/app/models/user"
+	"gentleman/pkg/database"
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"log"
 	"net/http"
 )
 
@@ -25,31 +24,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	}
 }
 
-type User struct {
-	ID     uint   `gorm:"primarykey"`
-	QQ     string `json:"qq"`
-	Title  string `json:"title"`
-	Score  int    `json:"score"`
-	Status string `json:"status"`
-}
-
-func (User) TableName() string {
-	return "user"
-}
-
-var db *gorm.DB
-
 func getUser(c *gin.Context) {
-	// Replace the connection details with your MySQL database configuration
-	//dsn := "root:wxl7756212@tcp(localhost:3306)/leetcode" # 服务器上的代码
-	dsn := "root:123456@tcp(localhost:3306)/leetcode"
-	var err error
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Println("connect failed")
-		log.Fatal(err)
-	}
-	var users []User
+
+	var users []user.User
+	db := database.DB
 	result := db.Select("id, qq, title, score, status").Find(&users)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
