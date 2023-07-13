@@ -2,6 +2,7 @@
 package routes
 
 import (
+	"gentleman/app/http/controllers/api/v1/auth"
 	"gentleman/app/models/user"
 	"gentleman/pkg/database"
 	"github.com/gin-gonic/gin"
@@ -27,6 +28,13 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		v1.GET("/fly_table", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "fly.html", nil)
 		})
+
+		authGroup := v1.Group("/auth")
+		{
+			suc := new(auth.SignupController)
+			// 判断 Email 是否已注册
+			authGroup.POST("/signup/email/exist", suc.IsEmailExist)
+		}
 
 	}
 }

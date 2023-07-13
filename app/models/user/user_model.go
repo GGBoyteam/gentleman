@@ -20,9 +20,9 @@ type User struct {
 	YesterdayCount int    `json:"yesterday_count"`
 	LastWeekCount  int    `json:"last_week_count"`
 	QQScore        int    `json:"qq_score"`
-	GGname         string `json:"GGname"`
-	GGemail        string `json:"-"`
-	GGpassword     string `json:"-"`
+	GGname         string `json:"name"`
+	Email          string `json:"-"`
+	Password       string `json:"-"`
 	models.CommonTimestampsField
 }
 
