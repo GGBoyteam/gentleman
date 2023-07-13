@@ -160,7 +160,7 @@
 
             let comparisonResult = 0;
 
-            if (columnIndex === 0) {
+            if (columnIndex === 0 || columnIndex==5) {
                 // 如果是第一列（行号），使用数字排序
                 comparisonResult = parseInt(cellA) - parseInt(cellB);
             } else {

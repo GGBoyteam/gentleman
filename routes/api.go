@@ -21,7 +21,11 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 		v1.GET("/users", getUser)
 		v1.GET("/query_table", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "index.html", nil)
+			c.HTML(http.StatusOK, "query.html", nil)
+		})
+
+		v1.GET("/fly_table", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "fly.html", nil)
 		})
 
 	}

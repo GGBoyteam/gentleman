@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>飞升的同学</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #ffcc80;
+    }
+
+    .unfinished {
+      color: red;
+    }
+
+    .guadian {
+      color : cornflowerblue;
+    }
+
+    .knight {
+      color: limegreen;
+    }
+    .
+  </style>
+</head>
+<body>
+<h1>飞升的同学</h1>
+
+
+
+<table id="user-table">
+  <tr>
+    <th onclick="sortTable(0)">行号</th>
+    <th onclick="sortTable(1)">QQ号</th>
+    <th onclick="sortTable(2)">称号</th>
+    <th onclick="sortTable(3)">周赛积分</th>
+    <th onclick="sortTable(4)">刷题状态</th>
+    <th onclick="sortTable(5)">刷题总数</th>
+  </tr>
+</table>
+
+<script>
+  const SortOrder = {
+    NONE: 0,
+    ASCENDING: 1,
+    DESCENDING: 2
+  };
+
+  let currentSortColumnIndex = -1;
+  let currentSortOrder = SortOrder.NONE;
+  let clickCount = 0;
+
+  const originalRows = []; // 存储初始表格行数据
+
+  // 异步请求获取用户信息
+  // fetch('http://www.ggcoding.top:9090/v1/users') // 替换为实际的路由地址
+  fetch('/v1/users') // 替换为实际的路由地址
+          .then(response => response.json())
+          .then(users => {
+
+            const table = document.getElementById('user-table');
+            let rowNumber = 1;
+            const ascendedTable = document.getElementById('ascended-users');
+            let hasAscendCandidate = false; // Flag to check if there are users who need to ascend
+            users.forEach(user => {
+              if (user.title === '飞升') {  // 只记录title为飞升的信息
+                hasAscendCandidate = true;
+                const row = document.createElement('tr');
+
+                const rowNumberCell = document.createElement('td');
+                rowNumberCell.textContent = rowNumber;
+                row.appendChild(rowNumberCell);
+                rowNumber++;
+
+                const qqCell = document.createElement('td');
+                const titleCell = document.createElement('td');
+                const scoreCell = document.createElement('td');
+                const statusCell = document.createElement('td');
+                const acCell = document.createElement('td');
+
+                qqCell.textContent = user.qq; // 假设用户对象有 qq 属性
+                titleCell.textContent = user.title; // 假设用户对象有 title 属性
+                scoreCell.textContent = user.score; // 假设用户对象有 score 属性
+                statusCell.textContent = user.status; // 假设用户对象有 status 属性
+                acCell.textContent = user.ac_count;  // 假设用户对象有 ac_count 属性
+
+                if (user.title)
+
+                row.appendChild(qqCell);
+                row.appendChild(titleCell);
+                row.appendChild(scoreCell);
+                row.appendChild(statusCell);
+                row.appendChild(acCell)
+
+                // 检查刷题状态是否为未完成，如果是，则添加类名
+                if (user.status === '未完成') {
+                  statusCell.classList.add('unfinished');
+                }
+
+                if (user.score > 2260) {
+                  scoreCell.classList.add('guadian');
+                } else if (user.score > 1885) {
+                  scoreCell.classList.add('knight');
+                }
+                table.appendChild(row);
+
+                originalRows.push(row); // 存储初始行数据
+              }
+            });
+            if (!hasAscendCandidate) {
+              const messageRow = document.createElement('tr');
+              const messageCell = document.createElement('td');
+              messageCell.setAttribute('colspan', '6');
+              messageCell.textContent = '今天大家都是安全的！';
+              messageRow.appendChild(messageCell);
+              table.insertBefore(messageRow, table.firstChild); // Insert the message row at the beginning of the table
+            } else {
+              const promptRow = document.createElement('tr');
+              const promptCell = document.createElement('td');
+              promptCell.setAttribute('colspan', '6');
+              promptCell.textContent = '飞升的同学可以通过表演2min才艺或者发群人数*0.1金额的红包来重置称号。';
+              promptRow.appendChild(promptCell);
+              table.insertBefore(promptRow, table.firstChild); // Insert the prompt row at the beginning of the table
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+
+  function sortTable(columnIndex) {
+    const table = document.getElementById('user-table');
+    const rows = Array.from(table.getElementsByTagName('tr'));
+
+    rows.shift(); // 移除表头行
+
+    // 每次点击累加计数器
+    clickCount++;
+
+    if (currentSortColumnIndex === columnIndex) {
+      // 如果点击的是当前排序列，则根据计数器选择排序顺序
+      if (clickCount % 3 === 1) {
+        currentSortOrder = SortOrder.ASCENDING;
+      } else if (clickCount % 3 === 2) {
+        currentSortOrder = SortOrder.DESCENDING;
+      } else {
+        currentSortOrder = SortOrder.NONE;
+        clickCount = 0; // 重置计数器
+      }
+    } else {
+      // 如果点击的是新的排序列，则使用默认升序排序
+      currentSortColumnIndex = columnIndex;
+      currentSortOrder = SortOrder.ASCENDING;
+    }
+
+
+
+    rows.sort((a, b) => {
+      let cellA = a.getElementsByTagName('td')[columnIndex].textContent;
+      let cellB = b.getElementsByTagName('td')[columnIndex].textContent;
+
+      let comparisonResult = 0;
+
+      if (columnIndex === 0 || columnIndex === 5) {
+        // 如果是第一列（行号），使用数字排序
+        comparisonResult = parseInt(cellA) - parseInt(cellB);
+      } else {
+        // 其他列按字符串排序
+        comparisonResult = cellA.localeCompare(cellB);
+      }
+
+      return currentSortOrder === SortOrder.ASCENDING ? comparisonResult : -comparisonResult;
+    });
+
+    // 清空表格内容
+    while (table.rows.length > 1) {
+      table.deleteRow(1);
+    }
+
+    // 根据排序顺序重新插入行
+    let sortedRows = [];
+    if (currentSortOrder === SortOrder.NONE) {
+      sortedRows = originalRows; // 恢复初始行数据
+    } else {
+      sortedRows = rows;
+    }
+
+    sortedRows.forEach(row => table.appendChild(row));
+  }
+</script>
+</body>
+</html>
