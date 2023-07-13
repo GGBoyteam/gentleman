@@ -49,7 +49,7 @@
 <table id="user-table">
     <tr>
         <th onclick="sortTable(0)">行号</th>
-        <th onclick="sortTable(1)">QQ号</th>
+        <th onclick="sortTable(1)">绰号</th>
         <th onclick="sortTable(2)">称号</th>
         <th onclick="sortTable(3)">周赛积分</th>
         <th onclick="sortTable(4)">刷题状态</th>
@@ -87,13 +87,13 @@
                 row.appendChild(rowNumberCell);
                 rowNumber++;
 
-                const qqCell = document.createElement('td');
+                const nameCell = document.createElement('td');
                 const titleCell = document.createElement('td');
                 const scoreCell = document.createElement('td');
                 const statusCell = document.createElement('td');
                 const acCell = document.createElement('td');
 
-                qqCell.textContent = user.qq; // 假设用户对象有 qq 属性
+                nameCell.textContent = user.username; // 假设用户对象有 qq 属性
                 titleCell.textContent = user.title; // 假设用户对象有 title 属性
                 scoreCell.textContent = user.score; // 假设用户对象有 score 属性
                 statusCell.textContent = user.status; // 假设用户对象有 status 属性
@@ -101,7 +101,7 @@
 
 
 
-                row.appendChild(qqCell);
+                row.appendChild(nameCell);
                 row.appendChild(titleCell);
                 row.appendChild(scoreCell);
                 row.appendChild(statusCell);
