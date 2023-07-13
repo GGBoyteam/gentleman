@@ -5,8 +5,7 @@ import (
 	v1 "gentleman/app/http/controllers/api/v1"
 	"gentleman/app/models/user"
 	"gentleman/app/requests"
-	"net/http"
-
+	"gentleman/pkg/response"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,7 +20,8 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 	if ok := requests.Validate(c, &request, requests.SignupEmailExist); !ok {
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
+	response.JSON(c, gin.H{
 		"exist": user.IsEmailExist(request.Email),
 	})
+
 }
