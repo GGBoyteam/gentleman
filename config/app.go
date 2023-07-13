@@ -1,7 +1,9 @@
 // Package config 站点配置信息
 package config
 
-import "gentleman/pkg/config"
+import (
+	"gentleman/pkg/config"
+)
 
 func init() {
 	config.Add("app", func() map[string]interface{} {
