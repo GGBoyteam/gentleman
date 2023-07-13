@@ -80,7 +80,7 @@ func customTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05"))
 }
 
-// getLogWriter 日志记录介质。Gohub 中使用了两种介质，os.Stdout 和文件
+// getLogWriter 日志记录介质。gentleman 中使用了两种介质，os.Stdout 和文件
 func getLogWriter(filename string, maxSize, maxBackup, maxAge int, compress bool, logType string) zapcore.WriteSyncer {
 
 	// 如果配置了按照日期记录日志文件
