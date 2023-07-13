@@ -6,7 +6,6 @@ import (
 	"gentleman/bootstrap"
 	btsConfig "gentleman/config"
 	"gentleman/pkg/config"
-
 	"github.com/gin-gonic/gin"
 )
 
