@@ -28,6 +28,10 @@ DB_PASSWORD=  你的数据库密码
 
 ## 编译运行
 
+docker开启mysql，或者自己本地有mysql是启动状态
+
+
+
 编译前，终端输入
 
 ```shell

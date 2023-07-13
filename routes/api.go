@@ -16,10 +16,13 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	{
 		// 注册一个路由
 		v1.GET("/", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "index.html", nil)
+			c.HTML(http.StatusOK, "home.html", nil)
 		})
 
 		v1.GET("/users", getUser)
+		v1.GET("/query_table", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "index.html", nil)
+		})
 
 	}
 }
@@ -28,7 +31,7 @@ func getUser(c *gin.Context) {
 
 	var users []user.User
 	db := database.DB
-	result := db.Select("id, qq, title, score, status").Find(&users)
+	result := db.Select("*").Find(&users)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": result.Error.Error(),

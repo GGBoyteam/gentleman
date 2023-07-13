@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button {
+            display: block;
+            border-radius: 4px;
+            background-color: #f4511e;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 20px;
+            padding: 10px;
+            width: 200px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin-bottom: 10px;
+            box-sizing: border-box; /* 添加此行 */
+        }
+
+        .button:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>温柔刷题群</h2>
+
+    <div class="button-container">
+        <button class="button"><span>登录</span></button>
+        <button class="button"><span>注册</span></button>
+        <a class="button" href="/v1/query_table"><span>查看考勤表</span></a>
+        <button class="button"><span>查看飞升表</span></button>
+    </div>
+</div>
+
+</body>
+</html>
