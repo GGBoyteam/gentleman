@@ -3,6 +3,7 @@ package user
 
 import (
 	"gentleman/app/models"
+	"gentleman/pkg/database"
 )
 
 // User 用户模型
@@ -15,17 +16,18 @@ type User struct {
 	Score          int    `json:"score"`
 	Status         string `json:"status"`
 	Homepage       string `json:"homepage"`
-	Username       string `json:"username"`
+	Username       string `json:"username"` // 力扣网站的用户名
 	AcCount        int    `json:"ac_count"`
 	YesterdayCount int    `json:"yesterday_count"`
 	LastWeekCount  int    `json:"last_week_count"`
 	QQScore        int    `json:"qq_score"`
-	GGname         string `json:"name"`
+	Name           string `json:"name"` // 考勤网站的用户名
 	Email          string `json:"-"`
 	Password       string `json:"-"`
 	models.CommonTimestampsField
 }
 
-func (User) TableName() string {
-	return "user"
+// Create 创建用户，通过 User.ID 来判断是否创建成功
+func (userModel *User) Create() {
+	database.DB.Create(&userModel)
 }
