@@ -6,6 +6,9 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/spf13/cast v1.5.1
 	github.com/spf13/viper v1.16.0
+	github.com/thedevsaddam/govalidator v1.9.10
+	go.uber.org/zap v1.24.0
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/mysql v1.5.1
 	gorm.io/driver/sqlite v1.5.2
 	gorm.io/gorm v1.25.2
@@ -39,9 +42,10 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
-	github.com/thedevsaddam/govalidator v1.9.10 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
+	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
