@@ -2,6 +2,7 @@
 package bootstrap
 
 import (
+	"gentleman/app/http/middlewares"
 	"gentleman/routes"
 	"net/http"
 	"strings"
@@ -24,7 +25,7 @@ func SetupRoute(router *gin.Engine) {
 
 func registerGlobalMiddleWare(router *gin.Engine) {
 	router.Use(
-		gin.Logger(),
+		middlewares.Logger(), // 自定义了中间件
 		gin.Recovery(),
 	)
 }
