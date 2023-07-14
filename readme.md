@@ -10,6 +10,7 @@
 4. 身份验证接口设计
 5. JSON解析和验证器封装
 6. 同学们刷题信息的爬取，考勤表，飞升表的实现
+7. 注册逻辑实现，引入图片验证码，短信验证码，密码加密存储，jwt认证等
 
 
 
@@ -26,11 +27,22 @@ git clone https://github.com/GGboya/gentleman.git
 1、在gentleman/.env  文件中按如下提示配置数据库连接
 
 ```go
+APP_ENV=local
+APP_KEY=zBqYyQrPNaIUsnRhsGtHLivjqiMjBVLS
+APP_DEBUG=true
+APP_URL=http://localhost:9090
+APP_LOG_LEVEL=debug
+APP_PORT=9090
+DB_CONNECTION=mysql
+
 DB_HOST=  你的数据库host地址
 DB_PORT=  你的数据库端口
 DB_DATABASE= 你的数据库名字
 DB_USERNAME=  你的数据库用户名
 DB_PASSWORD=  你的数据库密码
+DB_DEBUG=2
+LOG_TYPE=daily
+LOG_LEVEL=debug
 ```
 
 
