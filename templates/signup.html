@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>用户注册</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-bottom: 15px;
+    }
+
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+<h1>用户注册</h1>
+<form id="signup-form" accept-charset="UTF-8">
+
+
+
+  <label for="username">用户名:</label>
+  <input type="text" id="username" required><br>
+
+  <label for="password">密码:</label>
+  <input type="password" id="password" required><br>
+
+  <label for="confirm-password">确认密码:</label>
+  <input type="password" id="confirm-password" required><br>
+
+  <label for="captcha">图片验证码:</label>
+  <input type="text" id="captcha" required>
+  <img src="" id="captcha-image"><br>
+
+  <label for="username">邮箱:</label>
+  <input type="text" id="email" required><br>
+
+
+
+
+  <button type="submit" id="register-btn">注册</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // 获取图片验证码
+    function getCaptcha() {
+      $.ajax({
+        url: 'auth/verify-codes/captcha',
+        method: 'POST',
+        success: function(data) {
+          $('#captcha-image').attr('src', data.captcha_image);
+        },
+        error: function() {
+          alert('获取图片验证码失败');
+        }
+      });
+    }
+
+    function signupUser(username, password, captcha, confirmPassword, email) {
+      $.ajax({
+        url: 'auth/signup/using-email',
+        method: 'POST',
+        contentType: 'application/json', // 设置请求的内容类型为JSON
+        dataType: 'json', // 告诉jQuery预期的响应数据类型为JSON
+        data: JSON.stringify({
+          name: username,
+          password: password,
+          password_confirm: confirmPassword,
+          verify_code: captcha,
+          email: email
+        }),
+        success: function() {
+          alert('注册成功');
+          // 可以在这里进行页面跳转或其他操作
+        },
+        error: function() {
+          alert('注册失败');
+        }
+      });
+    }
+
+    // 当点击注册按钮时触发
+    $('#register-btn').click(function(event) {
+      event.preventDefault(); // 阻止表单默认提交行为
+
+      var username = $('#username').val();
+      var password = $('#password').val();
+      var confirmPassword = $('#confirm-password').val();
+      var captcha = $('#captcha').val();
+      var email = $('#email').val();
+
+      if (password !== confirmPassword) {
+        alert('密码和确认密码不一致');
+        return;
+      }
+
+      signupUser(username, password, captcha, confirmPassword, email);
+    });
+
+    // 页面加载完成后获取图片验证码
+    getCaptcha();
+  });
+</script>
+</body>
+</html>

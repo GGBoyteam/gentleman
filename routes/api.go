@@ -29,6 +29,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			c.HTML(http.StatusOK, "fly.html", nil)
 		})
 
+		v1.GET("/signup", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "signup.html", nil)
+		})
+
 		authGroup := v1.Group("/auth")
 		{
 			suc := new(auth.SignupController)

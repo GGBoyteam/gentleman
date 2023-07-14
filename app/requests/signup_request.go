@@ -2,6 +2,7 @@
 package requests
 
 import (
+	"fmt"
 	"gentleman/app/requests/validators"
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/govalidator"
@@ -73,6 +74,7 @@ func SignupUsingEmail(data interface{}, c *gin.Context) map[string][]string {
 		},
 	}
 
+	fmt.Println("这里===", data)
 	errs := validate(data, rules, messages)
 
 	_data := data.(*SignupUsingEmailRequest)
