@@ -12,7 +12,7 @@ type User struct {
 	models.BaseModel
 
 	QQ             string `json:"qq"`
-	level          int    `json:"level"`
+	Level          int    `json:"level"`
 	Title          string `json:"title"`
 	Score          int    `json:"score"`
 	Status         string `json:"status"`
