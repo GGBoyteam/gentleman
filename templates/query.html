@@ -71,8 +71,8 @@
     const originalRows = []; // 存储初始表格行数据
 
     // 异步请求获取用户信息
-    fetch('http://www.ggcoding.top:9090/v1/users') // 替换为实际的路由地址
-    // fetch('/v1/users') // 替换为实际的路由地址
+    // fetch('http://www.ggcoding.top:9090/v1/users') // 替换为实际的路由地址
+    fetch('/v1/users') // 替换为实际的路由地址
         .then(response => response.json())
         .then(users => {
             const table = document.getElementById('user-table');
@@ -200,7 +200,11 @@
             sortedRows = rows;
         }
 
-        sortedRows.forEach(row => table.appendChild(row));
+        sortedRows.forEach((row, index) => {
+            const rowNumberCell = row.getElementsByTagName('td')[0];
+            rowNumberCell.textContent = index + 1; // Update the row number
+            table.appendChild(row);
+        });
     }
 </script>
 </body>
