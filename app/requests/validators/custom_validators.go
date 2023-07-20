@@ -29,3 +29,9 @@ func ValidateVerifyCode(key, answer string, errs map[string][]string) map[string
 	}
 	return errs
 }
+
+// ValidateQQ 自定义规则，验证QQ, 如果QQ不在数据库，那么无法注册。
+func ValidateQQ(key, errs map[string][]string) map[string][]string {
+
+	return errs
+}

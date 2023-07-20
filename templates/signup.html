@@ -70,8 +70,8 @@
   <input type="text" id="captcha" required>
   <img src="" id="captcha-image"><br>
 
-  <label for="username">邮箱:</label>
-  <input type="text" id="email" required><br>
+  <label for="qq">QQ:</label>
+  <input type="text" id="qq" required><br>
 
 
 
@@ -96,9 +96,9 @@
       });
     }
 
-    function signupUser(username, password, captcha, confirmPassword, email) {
+    function signupUser(username, password, captcha, confirmPassword, qq) {
       $.ajax({
-        url: 'auth/signup/using-email',
+        url: 'auth/signup/using-qq',
         method: 'POST',
         contentType: 'application/json', // 设置请求的内容类型为JSON
         dataType: 'json', // 告诉jQuery预期的响应数据类型为JSON
@@ -107,7 +107,7 @@
           password: password,
           password_confirm: confirmPassword,
           verify_code: captcha,
-          email: email
+          qq: qq
         }),
         success: function() {
           alert('注册成功');
@@ -127,14 +127,14 @@
       var password = $('#password').val();
       var confirmPassword = $('#confirm-password').val();
       var captcha = $('#captcha').val();
-      var email = $('#email').val();
+      var qq = $('#qq').val();
 
       if (password !== confirmPassword) {
         alert('密码和确认密码不一致');
         return;
       }
 
-      signupUser(username, password, captcha, confirmPassword, email);
+      signupUser(username, password, captcha, confirmPassword, qq);
     });
 
     // 页面加载完成后获取图片验证码

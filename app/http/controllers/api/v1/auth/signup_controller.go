@@ -54,3 +54,42 @@ func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 		response.Abort500(c, "创建用户失败，请稍后尝试~")
 	}
 }
+
+// IsQQExist 检测QQ是否已注册
+func (sc *SignupController) IsQQExist(c *gin.Context) {
+	request := requests.SignupQQExistRequest{}
+	if ok := requests.Validate(c, &request, requests.SignupEmailExist); !ok {
+		return
+	}
+	response.JSON(c, gin.H{
+		"exist": user.IsEmailExist(request.QQ),
+	})
+}
+
+// SignupUsingQQ 使用 QQ + 图片验证码进行注册
+func (sc *SignupController) SignupUsingQQ(c *gin.Context) {
+
+	// 1. 验证表单
+	request := requests.SignupUsingQQRequest{}
+	if ok := requests.Validate(c, &request, requests.SignupUsingQQ); !ok {
+		return
+	}
+
+	// 2. 验证成功，创建数据
+	userModel := user.User{
+		Name:     request.Name,
+		QQ:       request.QQ,
+		Password: request.Password,
+	}
+	userModel.Create()
+
+	if userModel.ID > 0 {
+		token := jwt.NewJWT().IssueToken(userModel.GetStringID(), userModel.Name)
+		response.CreatedJSON(c, gin.H{
+			"token": token,
+			"data":  userModel,
+		})
+	} else {
+		response.Abort500(c, "创建用户失败，请稍后尝试~")
+	}
+}
