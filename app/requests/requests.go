@@ -44,7 +44,6 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 
 func validate(data interface{}, rules govalidator.MapData, messages govalidator.MapData) map[string][]string {
 	// 配置选项
-	fmt.Println("==============================能复现data吗================================")
 	opts := govalidator.Options{
 		Data:          data,
 		Rules:         rules,

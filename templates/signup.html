@@ -7,25 +7,40 @@
       font-family: Arial, sans-serif;
       background-color: #f2f2f2;
       padding: 20px;
-    }
-
-    h1 {
-      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
 
     form {
       max-width: 400px;
-      margin: 0 auto;
       background-color: #fff;
-      padding: 20px;
+      padding: 30px;
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-header h1 {
+      margin: 0;
+      color: #333;
+    }
+
+    .form-header p {
+      color: #666;
     }
 
     label {
       display: block;
       margin-bottom: 10px;
       font-weight: bold;
+      color: #333;
     }
 
     input[type="text"],
@@ -34,49 +49,55 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 3px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #007bff;
     }
 
     button[type="submit"] {
-      background-color: #4CAF50;
+      background-color: #007bff;
       color: #fff;
       padding: 10px 20px;
       border: none;
       border-radius: 3px;
       cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.2s ease;
     }
 
     button[type="submit"]:hover {
-      background-color: #45a049;
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-<h1>用户注册</h1>
 <form id="signup-form" accept-charset="UTF-8">
-
-
+  <div class="form-header">
+    <h1>用户注册</h1>
+    <p>请填写以下信息完成注册</p>
+  </div>
 
   <label for="username">用户名:</label>
-  <input type="text" id="username" required><br>
+  <input type="text" id="username" required>
 
   <label for="password">密码:</label>
-  <input type="password" id="password" required><br>
+  <input type="password" id="password" required>
 
   <label for="confirm-password">确认密码:</label>
-  <input type="password" id="confirm-password" required><br>
+  <input type="password" id="confirm-password" required>
 
   <label for="captcha">图片验证码:</label>
   <input type="text" id="captcha" required>
-  <img src="" id="captcha-image"><br>
+  <img src="" id="captcha-image">
 
   <label for="qq">QQ:</label>
-  <input type="text" id="qq" required><br>
+  <input type="text" id="qq" required>
 
-
-
-
-  <button type="submit" id="register-btn">注册</button>
+  <button type="submit">注册</button>
 </form>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

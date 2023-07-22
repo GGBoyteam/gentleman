@@ -33,6 +33,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			c.HTML(http.StatusOK, "signup.html", nil)
 		})
 
+		v1.GET("/login", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "login.html", nil)
+		})
+
 		authGroup := v1.Group("/auth")
 		{
 			suc := new(auth.SignupController)
@@ -49,6 +53,12 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			authGroup.POST("/verify-codes/captcha", vcc.ShowCaptcha)
 			authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
 			authGroup.POST("/verify-codes/qq", vcc.SendUsingQQ)
+
+			lgc := new(auth.LoginController)
+			// 使用手机号，短信验证码进行登录，还未开启
+			authGroup.POST("/login/using-phone", lgc.LoginByPhone)
+			// 支持QQ 和 用户名，使用的是这个
+			authGroup.POST("/login/using-password", lgc.LoginByPassword)
 		}
 
 	}

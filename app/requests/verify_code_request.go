@@ -53,7 +53,7 @@ type VerifyCodeQQRequest struct {
 	CaptchaID     string `json:"captcha_id,omitempty" valid:"captcha_id"`
 	CaptchaAnswer string `json:"captcha_answer,omitempty" valid:"captcha_answer"`
 
-	QQ string `json:"email,omitempty" `
+	QQ string `json:"qq,omitempty" `
 }
 
 // VerifyCodeQQ 验证表单，返回长度等于零即通过
@@ -85,7 +85,7 @@ func VerifyCodeQQ(data interface{}, c *gin.Context) map[string][]string {
 	errs := validate(data, rules, messages)
 
 	// 图片验证码
-	_data := data.(*VerifyCodeEmailRequest)
+	_data := data.(*VerifyCodeQQRequest)
 	errs = validators.ValidateCaptcha(_data.CaptchaID, _data.CaptchaAnswer, errs)
 
 	return errs

@@ -46,7 +46,7 @@ func (vc *VerifyCodeController) SendUsingEmail(c *gin.Context) {
 	}
 }
 
-// SendUsingEmail 使用QQ之前，必须是验证码通过的人
+// SendUsingQQ 使用QQ之前，必须是验证码通过的人
 func (vc *VerifyCodeController) SendUsingQQ(c *gin.Context) {
 	// 1. 验证表单
 	request := requests.VerifyCodeQQRequest{}

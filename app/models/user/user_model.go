@@ -2,6 +2,7 @@
 package user
 
 import (
+	"fmt"
 	"gentleman/app/models"
 	"gentleman/pkg/database"
 	"gentleman/pkg/hash"
@@ -35,5 +36,6 @@ func (userModel *User) Create() {
 
 // ComparePassword 密码是否正确
 func (userModel *User) ComparePassword(_password string) bool {
+	fmt.Println(_password, userModel.Password)
 	return hash.BcryptCheck(_password, userModel.Password)
 }
