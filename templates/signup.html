@@ -86,6 +86,8 @@
 
   <label for="password">密码:</label>
   <input type="password" id="password" required>
+  <span id="password-length-warning" style="color: red;"></span> <!-- 用于显示提示消息 -->
+
 
   <label for="confirm-password">确认密码:</label>
   <input type="password" id="confirm-password" required>
@@ -116,6 +118,18 @@
         }
       });
     }
+
+    // 在密码输入框上添加事件监听器，实时检查密码长度
+    $('#password').on('input', function() {
+      var password = $(this).val();
+
+      // 检查密码长度
+      if (password.length < 6) {
+        $('#password-length-warning').text('密码长度必须至少为6个字符');
+      } else {
+        $('#password-length-warning').text(''); // 清空提示消息
+      }
+    });
 
     function signupUser(username, password, captcha, confirmPassword, qq) {
       $.ajax({
@@ -149,6 +163,8 @@
       var confirmPassword = $('#confirm-password').val();
       var captcha = $('#captcha').val();
       var qq = $('#qq').val();
+
+
 
       if (password !== confirmPassword) {
         alert('密码和确认密码不一致');

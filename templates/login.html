@@ -70,6 +70,7 @@
             background-color: #0056b3;
         }
 
+
         .response-message {
             text-align: center;
             color: #f00;
@@ -98,6 +99,7 @@
         <div class="form-group">
             <label for="password">密码：</label>
             <input type="password" id="password" name="password" required>
+            <span class="password-error-message"></span>
         </div>
 
         <label for="captcha">图片验证码:</label>
@@ -129,7 +131,6 @@
                 }
             });
         }
-
 
 
         function loginUser(username, password, captcha, captcha_id) {
