@@ -39,6 +39,8 @@
     <h2>温柔刷题群</h2>
 
     <div class="button-container">
+        <!-- 添加一个判断登录状态的链接 -->
+        <a class="btn btn-primary btn-lg mb-3 button" href="javascript:void(0);" onclick="checkLoginAndNavigate()">温柔三国</a>
         <a class="btn btn-primary btn-lg mb-3 button" href="/v1/login">登录</a>
         <a class="btn btn-primary btn-lg mb-3 button" href="/v1/signup">注册</a>
         <a class="btn btn-primary btn-lg mb-3 button" href="/v1/query_table">查看考勤表</a>
@@ -47,5 +49,48 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // 检查登录状态并跳转到指定链接
+    // 点击访问温柔三国链接时触发的函数
+    function checkLoginAndNavigate() {
+        // 从本地获取保存的 token 信息
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            // 构建请求的 URL
+            const url = '/v1/auth/isLogin';
+
+            // 发起 GET 请求，并在请求头中添加 Authorization 字段
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        // 处理请求错误
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // 处理响应数据
+                    console.log(data);
+                    // 这里可以对响应数据进行进一步的处理
+                    window.location.href = '/v1/gentleman';
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                    // 处理错误
+                });
+        } else {
+            // 未登录，跳转到登录页面
+            window.location.href = '/v1/login';
+        }
+    }
+
+</script>
 </body>
 </html>

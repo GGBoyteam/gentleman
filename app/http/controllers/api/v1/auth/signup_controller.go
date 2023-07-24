@@ -93,3 +93,13 @@ func (sc *SignupController) SignupUsingQQ(c *gin.Context) {
 		response.Abort500(c, "创建用户失败，请稍后尝试~")
 	}
 }
+
+func (sc *SignupController) IsLogin(c *gin.Context) {
+	newJwt := jwt.NewJWT()
+	claims, err := newJwt.ParserToken(c)
+	if err != nil {
+		response.Abort500(c, "用户未登录")
+	} else {
+		c.Set("username", claims.UserName)
+	}
+}

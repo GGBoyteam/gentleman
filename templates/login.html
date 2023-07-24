@@ -106,7 +106,9 @@
 
         <input type="hidden" id="captcha_id" name="captcha_id" value="">
         <button type="submit">登录</button>
+
     </form>
+
     <div class="response-message" id="responseMessage"></div>
 </div>
 
@@ -147,20 +149,37 @@
                         // 登录成功，将token存储在localStorage或sessionStorage中
                         // 你可以在这里将用户重定向到另一个页面
                         localStorage.setItem('token', data.token);
-                        $('#responseMessage').text('登录成功！');
-                        $('#responseMessage').css('color', '#007bff');
-                        // Redirect to home.html after successful login
-                        window.location.href = '/v1';
+                        // 弹出确认框
+                        var confirmation = window.confirm('登录成功！点击确认跳转到首页。');
+                        if (confirmation) {
+                            // 用户点击确认，跳转到其他页面
+                            window.location.href = '/v1'; // 替换'/v1'为您要跳转的页面URL
+                        } else {
+                            // 用户点击取消，可以根据需要执行其他操作
+                            // 例如：显示其他提示信息，或者停留在当前页面
+                        }
                     } else {
-                        $('#responseMessage').text('登录失败：' + data.error);
-                        $('#responseMessage').css('color', '#f00');
+                        var confirmation = window.confirm('登录失败！点击确认重新登录。');
+                        if (confirmation) {
+                            // 用户点击确认，跳转到其他页面
+                            window.location.href = '/v1/login'; // 替换'/v1'为您要跳转的页面URL
+                        } else {
+                            // 用户点击取消，可以根据需要执行其他操作
+                            // 例如：显示其他提示信息，或者停留在当前页面
+                        }
                     }
                 },
+
                 error: function() {
                     alert('登录失败');
                 }
+
             });
         }
+
+
+
+
 
         // 当点击登录按钮时触发
         $('#loginForm').submit(function(event) {
@@ -176,7 +195,11 @@
 
         // 页面加载完成后获取图片验证码
         getCaptcha();
+
+
     });
+
+
 </script>
 </body>
 </html>

@@ -37,6 +37,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			c.HTML(http.StatusOK, "login.html", nil)
 		})
 
+		v1.GET("/gentleman", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "gentleman.html", nil)
+		})
+
 		authGroup := v1.Group("/auth")
 		{
 			suc := new(auth.SignupController)
@@ -46,6 +50,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 			authGroup.POST("/signup/qq/exist", suc.IsQQExist)
 			authGroup.POST("/signup/using-qq", suc.SignupUsingQQ)
+
+			authGroup.GET("/isLogin", suc.IsLogin)
 
 			// 发送验证码
 			vcc := new(auth.VerifyCodeController)
