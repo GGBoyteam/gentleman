@@ -149,7 +149,7 @@
                     if (data.token) {
                         // 登录成功，将token存储在localStorage或sessionStorage中
                         // 你可以在这里将用户重定向到另一个页面
-                        localStorage.setItem('token', data.token);
+                        sessionStorage.setItem('token', data.token);
                         // 弹出确认框
                         let confirmation = window.confirm('登录成功！点击确认跳转到首页。');
                         if (confirmation) {

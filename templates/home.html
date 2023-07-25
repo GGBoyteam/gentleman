@@ -55,7 +55,7 @@
     // 点击访问温柔三国链接时触发的函数
     function checkLoginAndNavigate() {
         // 从本地获取保存的 token 信息
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
 
         if (token) {
             // 构建请求的 URL
@@ -87,6 +87,7 @@
                 });
         } else {
             // 未登录，跳转到登录页面
+            alert("请先登录");
             window.location.href = '/v1/login';
         }
     }
