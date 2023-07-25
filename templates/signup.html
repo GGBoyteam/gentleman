@@ -1,182 +1,221 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-  <title>用户注册</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    form {
-      max-width: 400px;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+        .login-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
 
-    .form-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+        .login-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
 
-    .form-header h1 {
-      margin: 0;
-      color: #333;
-    }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-    .form-header p {
-      color: #666;
-    }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
-      color: #333;
-    }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
 
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-      margin-bottom: 20px;
-      outline: none;
-    }
+        .form-group input:focus {
+            border-color: #007bff;
+        }
 
-    input[type="text"]:focus,
-    input[type="password"]:focus {
-      border-color: #007bff;
-    }
+        .form-group button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s ease;
+        }
 
-    button[type="submit"] {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.2s ease;
-    }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
 
-    button[type="submit"]:hover {
-      background-color: #0056b3;
-    }
-  </style>
+
+        .response-message {
+            text-align: center;
+            color: #f00;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .captcha-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .captcha-container img {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-<form id="signup-form" accept-charset="UTF-8">
-  <div class="form-header">
+<div class="login-container">
     <h1>用户注册</h1>
-    <p>请填写以下信息完成注册</p>
-  </div>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="login_id">用户名：</label>
+            <input type="text" id="login_id" name="login_id" required>
+        </div>
 
-  <label for="username">用户名:</label>
-  <input type="text" id="username" required>
+        <div class="form-group">
+            <label for="qq">QQ</label>
+            <input type="text" id="qq" name="qq" required>
+        </div>
 
-  <label for="password">密码:</label>
-  <input type="password" id="password" required>
-  <span id="password-length-warning" style="color: red;"></span> <!-- 用于显示提示消息 -->
+        <div class="form-group">
+            <label for="password">密码：</label>
+            <input type="password" id="password" name="password" required>
+            <span class="password-error-message"></span>
+        </div>
 
+        <div class="form-group">
+            <label for="confirm-password">确认密码：</label>
+            <input type="confirm-password" id="confirm-password" required>
+        </div>
 
-  <label for="confirm-password">确认密码:</label>
-  <input type="password" id="confirm-password" required>
+        <label for="captcha">图片验证码:</label>
+        <input type="text" id="captcha" required>
+        <img src="" id="captcha-image"><br>
 
-  <label for="captcha">图片验证码:</label>
-  <input type="text" id="captcha" required>
-  <img src="" id="captcha-image">
+        <input type="hidden" id="captcha_id" name="captcha_id" value="">
+        <button type="submit">注册</button>
 
-  <label for="qq">QQ:</label>
-  <input type="text" id="qq" required>
+    </form>
 
-  <button type="submit">注册</button>
-</form>
+    <div class="response-message" id="responseMessage"></div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
-    // 获取图片验证码
-    function getCaptcha() {
-      $.ajax({
-        url: 'auth/verify-codes/captcha',
-        method: 'POST',
-        success: function(data) {
-          $('#captcha-image').attr('src', data.captcha_image);
-        },
-        error: function() {
-          alert('获取图片验证码失败');
+    $(document).ready(function() {
+        // 获取图片验证码
+        function getCaptcha() {
+            $.ajax({
+                url: 'auth/verify-codes/captcha',
+                method: 'POST',
+                success: function(data) {
+                    $('#captcha-image').attr('src', data.captcha_image);
+                    $('#captcha_id').val(data.captcha_id); // 将captcha_id设置为隐藏表单项的值
+                },
+                error: function() {
+                    alert('获取图片验证码失败');
+                }
+            });
         }
-      });
-    }
 
-    // 在密码输入框上添加事件监听器，实时检查密码长度
-    $('#password').on('input', function() {
-      var password = $(this).val();
 
-      // 检查密码长度
-      if (password.length < 6) {
-        $('#password-length-warning').text('密码长度必须至少为6个字符');
-      } else {
-        $('#password-length-warning').text(''); // 清空提示消息
-      }
+        function loginUser(username, password, confirmPassword,captcha, captcha_id, qq) {
+            $.ajax({
+                url: 'auth/signup/using-qq',
+                method: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({
+                    name: username,
+                    password: password,
+                    password_confirm: confirmPassword,
+                    captcha_answer: captcha,
+                    captcha_id : captcha_id,
+                    qq: qq
+                }),
+                success: function(data) {
+                    if (data.token) {
+                        // 登录成功，将token存储在localStorage或sessionStorage中
+                        // 你可以在这里将用户重定向到另一个页面
+                        localStorage.setItem('token', data.token);
+                        // 弹出确认框
+                        let confirmation = window.confirm('登录成功！点击确认跳转到首页。');
+                        if (confirmation) {
+                            // 用户点击确认，跳转到其他页面
+                            window.location.href = '/v1'; // 替换'/v1'为您要跳转的页面URL
+                        } else {
+                            // 用户点击取消，可以根据需要执行其他操作
+                            // 例如：显示其他提示信息，或者停留在当前页面
+                        }
+                    } else {
+                        var confirmation = window.confirm('登录失败！点击确认重新登录。');
+                        if (confirmation) {
+                            // 用户点击确认，跳转到其他页面
+                            window.location.href = '/v1/login'; // 替换'/v1'为您要跳转的页面URL
+                        } else {
+                            // 用户点击取消，可以根据需要执行其他操作
+                            // 例如：显示其他提示信息，或者停留在当前页面
+                        }
+                    }
+                },
+
+                error: function() {
+                    alert('登录失败');
+                }
+
+            });
+        }
+
+
+
+
+
+        // 当点击登录按钮时触发
+        $('#loginForm').submit(function(event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+
+            var username = $('#login_id').val();
+            var password = $('#password').val();
+            var captcha = $('#captcha').val();
+            var captcha_id = $('#captcha_id').val();
+            var confirmPassword = $('#confirm-password').val();
+            var qq = $('#qq').val();
+
+            loginUser(username, password, confirmPassword, captcha, captcha_id, qq);
+        });
+
+        // 页面加载完成后获取图片验证码
+        getCaptcha();
+
+
     });
 
-    function signupUser(username, password, captcha, confirmPassword, qq) {
-      $.ajax({
-        url: 'auth/signup/using-qq',
-        method: 'POST',
-        contentType: 'application/json', // 设置请求的内容类型为JSON
-        dataType: 'json', // 告诉jQuery预期的响应数据类型为JSON
-        data: JSON.stringify({
-          name: username,
-          password: password,
-          password_confirm: confirmPassword,
-          verify_code: captcha,
-          qq: qq
-        }),
-        success: function() {
-          alert('注册成功');
-          // 可以在这里进行页面跳转或其他操作
-        },
-        error: function() {
-          alert('注册失败');
-        }
-      });
-    }
 
-    // 当点击注册按钮时触发
-    $('#register-btn').click(function(event) {
-      event.preventDefault(); // 阻止表单默认提交行为
-
-      var username = $('#username').val();
-      var password = $('#password').val();
-      var confirmPassword = $('#confirm-password').val();
-      var captcha = $('#captcha').val();
-      var qq = $('#qq').val();
-
-
-
-      if (password !== confirmPassword) {
-        alert('密码和确认密码不一致');
-        return;
-      }
-
-      signupUser(username, password, captcha, confirmPassword, qq);
-    });
-
-    // 页面加载完成后获取图片验证码
-    getCaptcha();
-  });
 </script>
 </body>
 </html>

@@ -108,6 +108,8 @@ type SignupUsingQQRequest struct {
 	Name            string `valid:"name" json:"name"`
 	Password        string `valid:"password" json:"password,omitempty"`
 	PasswordConfirm string `valid:"password_confirm" json:"password_confirm,omitempty"`
+	CaptchaID       string `json:"captcha_id,omitempty" valid:"captcha_id"`
+	CaptchaAnswer   string `json:"captcha_answer,omitempty" valid:"captcha_answer"`
 }
 
 func SignupUsingQQ(data interface{}, c *gin.Context) map[string][]string {
@@ -117,6 +119,8 @@ func SignupUsingQQ(data interface{}, c *gin.Context) map[string][]string {
 		"name":             []string{"required", "alpha_num", "between:3,20", "not_exists:users,name"},
 		"password":         []string{"required", "min:6"},
 		"password_confirm": []string{"required"},
+		"captcha_id":       []string{"required"},
+		"captcha_answer":   []string{"required", "digits:6"},
 	}
 
 	messages := govalidator.MapData{
@@ -137,6 +141,13 @@ func SignupUsingQQ(data interface{}, c *gin.Context) map[string][]string {
 		},
 		"password_confirm": []string{
 			"required:确认密码框为必填项",
+		},
+		"captcha_id": []string{
+			"required:图片验证码的 ID 为必填",
+		},
+		"captcha_answer": []string{
+			"required:图片验证码答案必填",
+			"digits:图片验证码长度必须为 6 位的数字",
 		},
 	}
 
