@@ -97,9 +97,27 @@
         <table id="user-table" class="table table-striped">
             <thead>
             <tr>
-                <th onclick="sortTable(0)">行号</th>
-                <th onclick="sortTable(1)">绰号</th>
-                <th onclick="sortTable(2)">刷题量</th>
+                <th onclick="sortTable(0, 'user-table')">行号</th>
+                <th onclick="sortTable(1,'user-table')">绰号</th>
+                <th onclick="sortTable(2,'user-table')">本日刷题量</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Here we will dynamically fill the table with data using JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container" id="tableContent_week" style="display: none;">
+    <!-- Table container -->
+    <div class="table-container">
+        <table id="user-table_week" class="table table-striped">
+            <thead>
+            <tr>
+                <th onclick="sortTable(0,'user-table_week')">行号</th>
+                <th onclick="sortTable(1,'user-table_week')">绰号</th>
+                <th onclick="sortTable(2,'user-table_week')">本周刷题量</th>
             </tr>
             </thead>
             <tbody>
@@ -148,8 +166,42 @@
             });
     }
 
+    function fetchAndFillData_week() {
+        // Fetch data from the server
+        // fetch('http://www.ggcoding.top:9090/v1/users')
+        fetch("users")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Clear the table data
+                const tableBody = document.getElementById('user-table_week').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = '';
+
+                // Fill the table data with the calculated difference
+                data.forEach((user, index) => {
+                    const difference = user.ac_count - user.last_week_count;
+                    const row = `<tr>
+                    <td>${index + 1}</td>
+                    <td>${user.username}</td>
+                    <td>${difference}</td>
+                </tr>`;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                // Handle error
+            });
+    }
+
     // Call the fetchAndFillData function after the page is loaded
     document.addEventListener('DOMContentLoaded', fetchAndFillData);
+
+    document.addEventListener('DOMContentLoaded', fetchAndFillData_week);
 
     // Function to show the table and hide the "温柔刷题群" content
     function showTable() {
@@ -157,8 +209,21 @@
         document.getElementById('tableContent').style.display = 'block';
     }
 
-    // Add event listener to "刷题日榜" link to show the table
-    document.querySelector('.navbar a:nth-child(1)').addEventListener('click', showTable);
+    function showTable_week() {
+        document.getElementById('gentlemanContent').style.display = 'none';
+        document.getElementById('tableContent').style.display = 'none'; // Hide the daily table
+        document.getElementById('tableContent_week').style.display = 'block'; // Show the weekly table
+    }
+
+    // Add event listener to "刷题日榜" link to show the daily table and hide the weekly table
+    document.querySelector('.navbar a:nth-child(1)').addEventListener('click', function () {
+        document.getElementById('gentlemanContent').style.display = 'none';
+        document.getElementById('tableContent').style.display = 'block'; // Show the daily table
+        document.getElementById('tableContent_week').style.display = 'none'; // Hide the weekly table
+    });
+
+    // Add event listener to "刷题周榜" link to show the weekly table and hide the daily table
+    document.querySelector('.navbar a:nth-child(2)').addEventListener('click', showTable_week);
 
     // Sorting function
     const SortOrder = {
@@ -170,8 +235,8 @@
     let currentSortOrder = SortOrder.NONE;
     let clickCount = 0;
 
-    function sortTable(columnIndex) {
-        const table = document.getElementById('user-table');
+    function sortTable(columnIndex, tableName) {
+        const table = document.getElementById(tableName);
         const rows = Array.from(table.getElementsByTagName('tr'));
 
         rows.shift(); // 移除表头行
