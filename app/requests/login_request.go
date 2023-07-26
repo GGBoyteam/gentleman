@@ -49,7 +49,6 @@ type LoginByPasswordRequest struct {
 
 // LoginByPassword 验证表单，返回长度等于零即通过
 func LoginByPassword(data interface{}, c *gin.Context) map[string][]string {
-
 	rules := govalidator.MapData{
 		"login_id":       []string{"required", "min:3"},
 		"password":       []string{"required", "min:6"},

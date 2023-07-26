@@ -17,12 +17,16 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	{
 		// 注册一个路由
 		v1.GET("/", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "home.html", nil)
+			c.HTML(http.StatusOK, "home_test.html", nil)
 		})
 
 		v1.GET("/users", getUser)
 		v1.GET("/query_table", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "query.html", nil)
+		})
+
+		v1.GET("/home", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "home.html", nil)
 		})
 
 		v1.GET("/fly_table", func(c *gin.Context) {
@@ -39,6 +43,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 
 		v1.GET("/gentleman", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "gentleman.html", nil)
+		})
+
+		v1.GET("/gostudy", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "gostudy.html", nil)
 		})
 
 		authGroup := v1.Group("/auth")

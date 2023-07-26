@@ -14,6 +14,8 @@
 
 
 
+
+
 # 使用指南
 
 ## 下载
@@ -24,7 +26,7 @@ git clone https://github.com/GGboya/gentleman.git
 
 ## 配置MySQL
 
-1、在gentleman/.env  文件中按如下提示配置数据库连接
+1、在gentleman/.env  文件中按如下提示配置数据库连接。如果没有.env文件，就自己新建一个。
 
 ```go
 APP_ENV=local
@@ -44,6 +46,16 @@ DB_DEBUG=2
 LOG_TYPE=daily
 LOG_LEVEL=debug
 ```
+
+
+
+## 下载依赖
+
+```
+go mod tidy
+```
+
+
 
 
 
