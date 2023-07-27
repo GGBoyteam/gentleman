@@ -206,7 +206,8 @@
     // Function to show the table and hide the "温柔刷题群" content
     function showTable() {
         document.getElementById('gentlemanContent').style.display = 'none';
-        document.getElementById('tableContent').style.display = 'block';
+        document.getElementById('tableContent_week').style.display = 'none'; // Hide the weekly table
+        document.getElementById('tableContent').style.display = 'block'; // Show the daily table
     }
 
     function showTable_week() {
@@ -216,11 +217,7 @@
     }
 
     // Add event listener to "刷题日榜" link to show the daily table and hide the weekly table
-    document.querySelector('.navbar a:nth-child(1)').addEventListener('click', function () {
-        document.getElementById('gentlemanContent').style.display = 'none';
-        document.getElementById('tableContent').style.display = 'block'; // Show the daily table
-        document.getElementById('tableContent_week').style.display = 'none'; // Hide the weekly table
-    });
+    document.querySelector('.navbar a:nth-child(1)').addEventListener('click', showTable);
 
     // Add event listener to "刷题周榜" link to show the weekly table and hide the daily table
     document.querySelector('.navbar a:nth-child(2)').addEventListener('click', showTable_week);

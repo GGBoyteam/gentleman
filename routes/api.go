@@ -21,12 +21,13 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		})
 
 		v1.GET("/users", getUser)
+
 		v1.GET("/query_table", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "query.html", nil)
 		})
 
 		v1.GET("/home", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "home.html", nil)
+			c.HTML(http.StatusOK, "index.html", nil)
 		})
 
 		v1.GET("/fly_table", func(c *gin.Context) {
@@ -41,12 +42,24 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			c.HTML(http.StatusOK, "login.html", nil)
 		})
 
-		v1.GET("/gentleman", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "gentleman.html", nil)
-		})
+		//v1.GET("/gentleman", func(c *gin.Context) {
+		//	c.HTML(http.StatusOK, "gentleman.html", nil)
+		//})
 
 		v1.GET("/gostudy", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "gostudy.html", nil)
+		})
+
+		v1.GET("/country", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "country.html", nil)
+		})
+
+		v1.GET("/dayPromblem", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "dayPromblem.html", nil)
+		})
+
+		v1.GET("/weekPromblem", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "weekPromblem.html", nil)
 		})
 
 		authGroup := v1.Group("/auth")

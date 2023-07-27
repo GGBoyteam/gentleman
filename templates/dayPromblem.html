@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>温柔刷题群</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #ffcc80;
+    }
+
+    .unfinished {
+      color: red;
+    }
+
+    .guadian {
+      color : cornflowerblue;
+    }
+
+    .knight {
+      color: limegreen;
+    }
+    .
+  </style>
+</head>
+<body>
+<h1>温柔刷题群日榜</h1>
+
+
+
+<table id="user-table">
+  <tr>
+    <th onclick="sortTable(0)">行号</th>
+    <th onclick="sortTable(1)">绰号</th>
+    <th onclick="sortTable(2)">日刷题量</th>
+  </tr>
+</table>
+
+<script>
+  const SortOrder = {
+    NONE: 0,
+    ASCENDING: 1,
+    DESCENDING: 2
+  };
+
+  let currentSortColumnIndex = -1;
+  let currentSortOrder = SortOrder.NONE;
+  let clickCount = 0;
+
+  const originalRows = []; // 存储初始表格行数据
+
+  // 异步请求获取用户信息
+  // fetch('http://www.ggcoding.top:9090/v1/users') // 替换为实际的路由地址
+  fetch('/v1/users') // 替换为实际的路由地址
+          .then(response => response.json())
+          .then(users => {
+            const table = document.getElementById('user-table');
+            let rowNumber = 1;
+            const ascendedTable = document.getElementById('ascended-users');
+
+            users.forEach(user => {
+              const row = document.createElement('tr');
+
+              const rowNumberCell = document.createElement('td');
+              rowNumberCell.textContent = rowNumber;
+              row.appendChild(rowNumberCell);
+              rowNumber++;
+
+              const nameCell = document.createElement('td');
+              const acCell = document.createElement('td');
+
+
+              nameCell.textContent = user.username; // 假设用户对象有 qq 属性
+              acCell.textContent = user.ac_count-user.yesterday_count;  // 假设用户对象有 ac_count 属性
+
+              // level字段隐藏title的表格里面
+              // 生成标签，标签隐藏，标签里面存title
+              //
+
+              row.appendChild(nameCell);
+              row.appendChild(acCell)
+
+
+
+
+              table.appendChild(row);
+
+              originalRows.push(row); // 存储初始行数据
+            });
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+
+  function sortTable(columnIndex) {
+    const table = document.getElementById('user-table');
+    const rows = Array.from(table.getElementsByTagName('tr'));
+
+    rows.shift(); // 移除表头行
+
+    // 每次点击累加计数器
+    clickCount++;
+
+    if (currentSortColumnIndex === columnIndex) {
+      // 如果点击的是当前排序列，则根据计数器选择排序顺序
+      if (clickCount % 3 === 1) {
+        currentSortOrder = SortOrder.ASCENDING;
+      } else if (clickCount % 3 === 2) {
+        currentSortOrder = SortOrder.DESCENDING;
+      } else {
+        currentSortOrder = SortOrder.NONE;
+        clickCount = 0; // 重置计数器
+      }
+    } else {
+      // 如果点击的是新的排序列，则使用默认升序排序
+      currentSortColumnIndex = columnIndex;
+      currentSortOrder = SortOrder.ASCENDING;
+    }
+
+
+
+    rows.sort((a, b) => {
+      let cellA, cellB;
+      if (columnIndex === 2) {
+        const levelA = a.dataset.level;
+        const levelB = b.dataset.level;
+        cellA = levelA;
+        cellB = levelB;
+        let comparisonResult = 0;
+        comparisonResult = parseInt(cellA) - parseInt(cellB);
+        return currentSortOrder === SortOrder.DESCENDING ? comparisonResult : -comparisonResult;
+      } else  {
+        cellA = a.getElementsByTagName('td')[columnIndex].textContent;
+        cellB = b.getElementsByTagName('td')[columnIndex].textContent;
+      }
+
+      let comparisonResult = 0;
+
+      if (columnIndex === 0 || columnIndex==5) {
+        // 如果是第一列（行号），使用数字排序
+        comparisonResult = parseInt(cellA) - parseInt(cellB);
+      } else {
+        // 其他列按字符串排序
+        comparisonResult = cellA.localeCompare(cellB);
+      }
+
+      return currentSortOrder === SortOrder.ASCENDING ? comparisonResult : -comparisonResult;
+    });
+
+    // 清空表格内容
+    while (table.rows.length > 1) {
+      table.deleteRow(1);
+    }
+
+    // 根据排序顺序重新插入行
+    let sortedRows = [];
+    if (currentSortOrder === SortOrder.NONE) {
+      sortedRows = originalRows; // 恢复初始行数据
+    } else {
+      sortedRows = rows;
+    }
+
+    sortedRows.forEach((row, index) => {
+      const rowNumberCell = row.getElementsByTagName('td')[0];
+      rowNumberCell.textContent = index + 1; // Update the row number
+      table.appendChild(row);
+    });
+  }
+</script>
+</body>
+</html>
