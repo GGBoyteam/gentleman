@@ -1,221 +1,165 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="Zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注册</title>
+    <meta charset="utf-8">
+    <title>温柔刷题群-注册</title>
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="../front/css/login.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
+        .centered-container {
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .login-container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .login-container h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-group input:focus {
-            border-color: #007bff;
-        }
-
-        .form-group button {
-            width: 100%;
-            padding: 12px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.2s ease;
-        }
-
-        .form-group button:hover {
-            background-color: #0056b3;
-        }
-
-
-        .response-message {
-            text-align: center;
-            color: #f00;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .captcha-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .captcha-container img {
-            margin-right: 10px;
         }
     </style>
 </head>
 <body>
-<div class="login-container">
-    <h1>用户注册</h1>
-    <form id="loginForm">
-        <div class="form-group">
-            <label for="login_id">用户名：</label>
-            <input type="text" id="login_id" name="login_id" required>
+<div class="my-login-box">
+    <h2>Login</h2>
+    <form id="SignUpForm">
+        <div class="user-box">
+            <input type="text" name="username" required>
+            <label>用户名</label>
         </div>
 
-        <div class="form-group">
-            <label for="qq">QQ</label>
-            <input type="text" id="qq" name="qq" required>
+        <div class="user-box">
+            <input type="text" name="qq" required>
+            <label>QQ号</label>
         </div>
 
-        <div class="form-group">
-            <label for="password">密码：</label>
-            <input type="password" id="password" name="password" required>
-            <span class="password-error-message"></span>
+        <div class="user-box">
+            <input type="password" name="password" required>
+            <label>密码</label>
+        </div>
+        <div class="user-box">
+            <input type="password" name="confirmPassword" required>
+            <label>确认密码</label>
+        </div>
+        <div class="user-box">
+            <input type="text" name="captcha" required>
+            <label>验证码</label>
+            <img id="captchaImage" src="" alt="验证码" style="display: none;">
+            <input type="hidden" name="captcha_id" value="" >
         </div>
 
-        <div class="form-group">
-            <label for="confirm-password">确认密码：</label>
-            <input type="password" id="confirm-password" required>
-        </div>
 
-        <label for="captcha">图片验证码:</label>
-        <input type="text" id="captcha" required>
-        <img src="" id="captcha-image"><br>
-
-        <input type="hidden" id="captcha_id" name="captcha_id" value="">
-        <button type="submit">注册</button>
+        <a href="#" id="registerLink">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span> 注册
+        </a>
 
     </form>
 
-    <div class="response-message" id="responseMessage"></div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    $(document).ready(function() {
-        // 获取图片验证码
-        function getCaptcha() {
-            $.ajax({
-                url: 'auth/verify-codes/captcha',
-                method: 'POST',
-                success: function(data) {
-                    $('#captcha-image').attr('src', data.captcha_image);
-                    $('#captcha_id').val(data.captcha_id); // 将captcha_id设置为隐藏表单项的值
-                },
-                error: function() {
-                    alert('获取图片验证码失败');
-                }
+    // Function to fetch captcha and update the captcha image
+    function fetchCaptcha() {
+        fetch("auth/verify-codes/captcha", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Update the captcha image and store captcha ID
+                document.getElementById("captchaImage").src = data.captcha_image;
+                document.getElementsByName("captcha_id")[0].value = data.captcha_id;
+            })
+            .catch(error => {
+                console.error("Error fetching captcha:", error);
+                // Handle any errors that occurred during fetching the captcha
             });
-        }
+    }
 
 
-        function loginUser(username, password, confirmPassword,captcha, captcha_id, qq) {
-            $.ajax({
-                url: 'auth/signup/using-qq',
-                method: 'POST',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify({
-                    name: username,
-                    password: password,
-                    password_confirm: confirmPassword,
-                    captcha_answer: captcha,
-                    captcha_id : captcha_id,
-                    qq: qq
-                }),
-                success: function(data) {
-                    if (data.token) {
-                        // 登录成功，将token存储在localStorage或sessionStorage中
-                        // 你可以在这里将用户重定向到另一个页面
-                        sessionStorage.setItem('token', data.token);
-                        // 弹出确认框
-                        let confirmation = window.confirm('登录成功！点击确认跳转到首页。');
-                        if (confirmation) {
-                            // 用户点击确认，跳转到其他页面
-                            window.location.href = '/v1'; // 替换'/v1'为您要跳转的页面URL
-                        } else {
-                            // 用户点击取消，可以根据需要执行其他操作
-                            // 例如：显示其他提示信息，或者停留在当前页面
-                        }
-                    } else {
-                        var confirmation = window.confirm('登录失败！点击确认重新登录。');
-                        if (confirmation) {
-                            // 用户点击确认，跳转到其他页面
-                            window.location.href = '/v1/login'; // 替换'/v1'为您要跳转的页面URL
-                        } else {
-                            // 用户点击取消，可以根据需要执行其他操作
-                            // 例如：显示其他提示信息，或者停留在当前页面
-                        }
-                    }
-                },
-
-                error: function() {
-                    alert('登录失败');
-                }
-
-            });
-        }
-
-
-
-
-
-        // 当点击登录按钮时触发
-        $('#loginForm').submit(function(event) {
-            event.preventDefault(); // 阻止表单默认提交行为
-
-            var username = $('#login_id').val();
-            var password = $('#password').val();
-            var captcha = $('#captcha').val();
-            var captcha_id = $('#captcha_id').val();
-            var confirmPassword = $('#confirm-password').val();
-            var qq = $('#qq').val();
-
-            loginUser(username, password, confirmPassword, captcha, captcha_id, qq);
-        });
-
-        // 页面加载完成后获取图片验证码
-        getCaptcha();
-
-
+    // 当用户点击验证码输入框时显示验证码图片
+    document.getElementsByName("captcha")[0].addEventListener("focus", function() {
+        // 获取验证码并更新验证码图片
+        fetchCaptcha();
+        document.getElementById("captchaImage").style.display = "block";
     });
 
 
+    // Add event listener to update captcha when clicking on the captcha image
+    document.getElementById("captchaImage").addEventListener("click", function() {
+        fetchCaptcha();
+    });
+
+    function handleSignUpClick() {
+        // Get the login form element
+        const SignUpForm = document.getElementById('SignUpForm');
+
+        // Get the form data
+        const formData = {
+            name: SignUpForm.username.value,
+            qq: SignUpForm.qq.value,
+            password: SignUpForm.password.value,
+            password_confirm: SignUpForm.confirmPassword.value,
+            captcha_answer: SignUpForm.captcha.value,
+            captcha_id: SignUpForm.captcha_id.value,
+        };
+
+        // Send the form data to the backend using fetch API
+        fetch("auth/signup/using-qq", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the backend
+                // 'data' here will contain the response sent from the backend
+                // You can process the data or show messages based on the response
+                console.log(data)
+                if (data.token) {
+                    sessionStorage.setItem('token', data.token);
+                    // 弹出确认框
+                    let confirmation = window.confirm('登录成功！点击确认跳转到温柔三国。');
+                    if (confirmation) {
+                        // 用户点击确认，跳转到其他页面
+                        window.location.href = '/v1/home'; // 替换'/v1'为您要跳转的页面URL
+                    } else {
+                        // 用户点击取消，可以根据需要执行其他操作
+                        // 例如：显示其他提示信息，或者停留在当前页面
+                    }
+                } else {
+                    let confirmation = window.confirm('登录失败！用户名或密码或验证码有误');
+                    if (confirmation) {
+                        // 用户点击确认，跳转到其他页面
+                    } else {
+                        // 用户点击取消，可以根据需要执行其他操作
+                    }
+                }
+
+            })
+            .catch(error => {
+                let confirmation = window.confirm('登录失败！用户名或者密码有误');
+                if (confirmation) {
+                    // 用户点击确认，跳转到其他页面
+                } else {
+                    // 用户点击取消，可以根据需要执行其他操作
+                    // 例如：显示其他提示信息，或者停留在当前页面
+                }
+                // Handle any errors that occurred during the fetch or backend processing
+            });
+    }
+
+    // Add click event listener to the login link
+    document.getElementById('registerLink').addEventListener('click', (event) => {
+        event.preventDefault();
+        handleSignUpClick();
+    });
+
+
+
+
 </script>
+
 </body>
 </html>

@@ -17,7 +17,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	{
 		// 注册一个路由
 		v1.GET("/", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "home_test.html", nil)
+			c.HTML(http.StatusOK, "homepage.html", nil)
 		})
 
 		v1.GET("/users", getUser)

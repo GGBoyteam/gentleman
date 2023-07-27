@@ -64,7 +64,6 @@ func (jwt *JWT) ParserToken(c *gin.Context) (*JWTCustomClaims, error) {
 	if parseErr != nil {
 		return nil, parseErr
 	}
-
 	// 1. 调用 jwt 库解析用户传参的 Token
 	token, err := jwt.parseTokenString(tokenString)
 
