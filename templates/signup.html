@@ -27,6 +27,11 @@
         </div>
 
         <div class="user-box">
+            <input type="text" name="lcusername" required>
+            <label>力扣用户名</label>
+        </div>
+
+        <div class="user-box">
             <input type="password" name="password" required>
             <label>密码</label>
         </div>
@@ -101,6 +106,7 @@
             password_confirm: SignUpForm.confirmPassword.value,
             captcha_answer: SignUpForm.captcha.value,
             captcha_id: SignUpForm.captcha_id.value,
+            LCUserName: SignUpForm.lcusername.value,
         };
 
         // Send the form data to the backend using fetch API
@@ -120,7 +126,7 @@
                 if (data.token) {
                     sessionStorage.setItem('token', data.token);
                     // 弹出确认框
-                    let confirmation = window.confirm('登录成功！点击确认跳转到温柔三国。');
+                    let confirmation = window.confirm('注册成功！点击确认跳转到温柔三国。');
                     if (confirmation) {
                         // 用户点击确认，跳转到其他页面
                         window.location.href = '/v1/home'; // 替换'/v1'为您要跳转的页面URL
@@ -129,7 +135,7 @@
                         // 例如：显示其他提示信息，或者停留在当前页面
                     }
                 } else {
-                    let confirmation = window.confirm('登录失败！用户名或密码或验证码有误');
+                    let confirmation = window.confirm('注册失败！用户名或密码或验证码有误');
                     if (confirmation) {
                         // 用户点击确认，跳转到其他页面
                     } else {
@@ -139,7 +145,7 @@
 
             })
             .catch(error => {
-                let confirmation = window.confirm('登录失败！用户名或者密码有误');
+                let confirmation = window.confirm('注册失败！用户名或者密码有误');
                 if (confirmation) {
                     // 用户点击确认，跳转到其他页面
                 } else {

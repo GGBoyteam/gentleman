@@ -139,18 +139,9 @@
 
     rows.sort((a, b) => {
       let cellA, cellB;
-      if (columnIndex === 2) {
-        const levelA = a.dataset.level;
-        const levelB = b.dataset.level;
-        cellA = levelA;
-        cellB = levelB;
-        let comparisonResult = 0;
-        comparisonResult = parseInt(cellA) - parseInt(cellB);
-        return currentSortOrder === SortOrder.DESCENDING ? comparisonResult : -comparisonResult;
-      } else  {
-        cellA = a.getElementsByTagName('td')[columnIndex].textContent;
-        cellB = b.getElementsByTagName('td')[columnIndex].textContent;
-      }
+
+      cellA = a.getElementsByTagName('td')[columnIndex].textContent;
+      cellB = b.getElementsByTagName('td')[columnIndex].textContent;
 
       let comparisonResult = 0;
 

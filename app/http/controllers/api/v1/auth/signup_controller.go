@@ -80,6 +80,7 @@ func (sc *SignupController) SignupUsingQQ(c *gin.Context) {
 		Name:     request.Name,
 		QQ:       request.QQ,
 		Password: request.Password,
+		Homepage: "https://leetcode.cn/u/" + request.LCUserName,
 	}
 	userModel.Create()
 

@@ -108,6 +108,7 @@ type SignupUsingQQRequest struct {
 	Name            string `valid:"name" json:"name"`
 	Password        string `valid:"password" json:"password,omitempty"`
 	PasswordConfirm string `valid:"password_confirm" json:"password_confirm,omitempty"`
+	LCUserName      string `valid:"lcusername" json:"lcusername,omitempty"`
 	CaptchaID       string `json:"captcha_id,omitempty" valid:"captcha_id"`
 	CaptchaAnswer   string `json:"captcha_answer,omitempty" valid:"captcha_answer"`
 }
@@ -119,6 +120,7 @@ func SignupUsingQQ(data interface{}, c *gin.Context) map[string][]string {
 		"name":             []string{"required", "alpha_num", "between:3,20", "not_exists:users,name"},
 		"password":         []string{"required", "min:6"},
 		"password_confirm": []string{"required"},
+		"lcusername":       []string{"required", "check-lc:users,lcusername"},
 		"captcha_id":       []string{"required"},
 		"captcha_answer":   []string{"required", "digits:6"},
 	}
@@ -141,6 +143,11 @@ func SignupUsingQQ(data interface{}, c *gin.Context) map[string][]string {
 		},
 		"password_confirm": []string{
 			"required:确认密码框为必填项",
+		},
+		"lcusername": []string{
+			"required:力扣用户域名为必填项",
+			"not_exists:域名 已被占用",
+			"check-lc: 域名不存在",
 		},
 		"captcha_id": []string{
 			"required:图片验证码的 ID 为必填",
