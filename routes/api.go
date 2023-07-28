@@ -3,6 +3,7 @@ package routes
 
 import (
 	"gentleman/app/http/controllers/api/v1/auth"
+	"gentleman/app/http/middlewares"
 	"gentleman/app/models/user"
 	"gentleman/pkg/database"
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,8 @@ func RegisterAPIRoutes(r *gin.Engine) {
 	// 测试一个 v1 的路由组，我们所有的 v1 版本的路由都将存放到这里
 	v1 := r.Group("/v1")
 	{
+
+		v1.Use(middlewares.LimitIP("60-H"))
 		// 注册一个路由
 		v1.GET("/", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "homepage.html", nil)
@@ -63,31 +66,29 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		})
 
 		authGroup := v1.Group("/auth")
+		authGroup.Use(middlewares.LimitIP("60-H"))
 		{
+			// 登录
+			lgc := new(auth.LoginController)
+			authGroup.POST("/login/using-phone", middlewares.GuestJWT(), lgc.LoginByPhone)
+			authGroup.POST("/login/using-password", middlewares.GuestJWT(), lgc.LoginByPassword)
+			authGroup.POST("/login/refresh-token", middlewares.AuthJWT(), lgc.RefreshToken)
+
+			// 注册
 			suc := new(auth.SignupController)
-			// 判断 Email 是否已注册
-
-			authGroup.POST("/signup/email/exist", suc.IsEmailExist)
-			authGroup.POST("/signup/using-email", suc.SignupUsingEmail)
-
-			authGroup.POST("/signup/qq/exist", suc.IsQQExist)
-			authGroup.POST("/signup/using-qq", suc.SignupUsingQQ)
-
-			authGroup.GET("/isLogin", suc.IsLogin)
+			authGroup.POST("/signup/email/exist", middlewares.GuestJWT(), suc.IsEmailExist)
+			authGroup.POST("/signup/using-email", middlewares.GuestJWT(), suc.SignupUsingEmail)
+			authGroup.POST("/signup/qq/exist", middlewares.GuestJWT(), middlewares.LimitPerRoute("60-H"), suc.IsQQExist)
+			authGroup.POST("/signup/using-qq", middlewares.GuestJWT(), suc.SignupUsingQQ)
+			authGroup.GET("/isLogin", middlewares.GuestJWT(), suc.IsLogin)
 
 			// 发送验证码
 			vcc := new(auth.VerifyCodeController)
-			// 图片验证码，需要加限流
-			authGroup.POST("/verify-codes/captcha", vcc.ShowCaptcha)
 			authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
 			authGroup.POST("/verify-codes/qq", vcc.SendUsingQQ)
+			// 图片验证码,加限流
+			authGroup.POST("/verify-codes/captcha", middlewares.LimitPerRoute("50-H"), vcc.ShowCaptcha)
 
-			lgc := new(auth.LoginController)
-			// 使用手机号，短信验证码进行登录，还未开启
-			authGroup.POST("/login/using-phone", lgc.LoginByPhone)
-			// 支持QQ 和 用户名，使用的是这个
-			authGroup.POST("/login/using-password", lgc.LoginByPassword)
-			authGroup.POST("/login/refresh-token", lgc.RefreshToken)
 		}
 
 	}
