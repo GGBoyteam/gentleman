@@ -120,7 +120,7 @@ func SignupUsingQQ(data interface{}, c *gin.Context) map[string][]string {
 		"name":             []string{"required", "alpha_num", "between:3,20", "not_exists:users,name"},
 		"password":         []string{"required", "min:6"},
 		"password_confirm": []string{"required"},
-		"lcusername":       []string{"required", "check-lc:users,lcusername"},
+		"lcusername":       []string{"required", "check-lc:users,homepage"},
 		"captcha_id":       []string{"required"},
 		"captcha_answer":   []string{"required", "digits:6"},
 	}
@@ -146,8 +146,7 @@ func SignupUsingQQ(data interface{}, c *gin.Context) map[string][]string {
 		},
 		"lcusername": []string{
 			"required:力扣用户域名为必填项",
-			"not_exists:域名 已被占用",
-			"check-lc: 域名不存在",
+			"check-lc: 域名不存在或者被占用",
 		},
 		"captcha_id": []string{
 			"required:图片验证码的 ID 为必填",
