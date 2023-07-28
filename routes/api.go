@@ -66,6 +66,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 		{
 			suc := new(auth.SignupController)
 			// 判断 Email 是否已注册
+
 			authGroup.POST("/signup/email/exist", suc.IsEmailExist)
 			authGroup.POST("/signup/using-email", suc.SignupUsingEmail)
 
@@ -86,6 +87,7 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			authGroup.POST("/login/using-phone", lgc.LoginByPhone)
 			// 支持QQ 和 用户名，使用的是这个
 			authGroup.POST("/login/using-password", lgc.LoginByPassword)
+			authGroup.POST("/login/refresh-token", lgc.RefreshToken)
 		}
 
 	}
