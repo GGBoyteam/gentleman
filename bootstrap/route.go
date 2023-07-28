@@ -27,6 +27,7 @@ func registerGlobalMiddleWare(router *gin.Engine) {
 	router.Use(
 		middlewares.Logger(),   // 自定义了中间件
 		middlewares.Recovery(), // 当 recovery 时，使用 zap 来记录日志，所以需要创建自定的中间件
+		middlewares.ForceUA(),
 	)
 }
 
