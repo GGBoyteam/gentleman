@@ -89,14 +89,14 @@ type SignupQQExistRequest struct {
 func SignupQQExist(data interface{}, c *gin.Context) map[string][]string {
 	// 自定义验证规则
 	rules := govalidator.MapData{
-		"email": []string{"required", "min:4", "max:10"},
+		"qq": []string{"required", "min:4", "max:10"},
 	}
 	// 自定义验证出错时的提示
 	messages := govalidator.MapData{
-		"email": []string{
-			"required:Email 为必填项",
-			"min:Email 长度需大于 4",
-			"max:Email 长度需小于 10",
+		"qq": []string{
+			"required:QQ 为必填项",
+			"min:QQ 长度需大于 4",
+			"max:QQ 长度需小于 10",
 		},
 	}
 	return validate(data, rules, messages)
@@ -129,7 +129,7 @@ func SignupUsingQQ(data interface{}, c *gin.Context) map[string][]string {
 		"qq": []string{
 			"required:QQ 为必填项",
 			"min:QQ 长度需大于 4",
-			"max:QQ 长度需小于 30",
+			"max:QQ 长度需小于 10",
 			"not_exists:QQ 已被占用",
 		},
 		"name": []string{

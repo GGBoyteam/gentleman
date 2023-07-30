@@ -29,7 +29,6 @@ func Validate(c *gin.Context, obj interface{}, handler ValidatorFunc) bool {
 		fmt.Println(err.Error())
 		return false
 	}
-	fmt.Println("======================进入到这里了吗===================================")
 	// 2. 表单验证
 	errs := handler(obj, c)
 

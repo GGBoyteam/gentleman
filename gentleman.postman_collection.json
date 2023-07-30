@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "5aa07fb1-57e4-4794-a073-b9aded12170f",
+		"name": "gentleman",
+		"description": "温柔刷题群考勤网站",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25725387"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"item": [
+						{
+							"name": "/signup/using-qq",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"qq\": \"630591902\",\r\n    \"name\": \"12324\",\r\n    \"password\":\"123456\",\r\n    \"password_confirm\":\"123456\",\r\n    \"lcusername\":\"megurine\",\r\n    \"captcha_answer\":\"737370\",\r\n    \"captcha_id\":\"sRNC4hzbVr7auuUxOhKz\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth/signup/using-qq",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"signup",
+										"using-qq"
+									]
+								},
+								"description": "用QQ来注册"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"qq\":\"630591905\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth/signup/qq/exist",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"signup",
+										"qq",
+										"exist"
+									]
+								},
+								"description": "QQ是否使用过"
+							},
+							"response": []
+						}
+					],
+					"description": "注册"
+				},
+				{
+					"name": "Verify Code",
+					"item": [
+						{
+							"name": "verify-codes/captcha",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/auth/verify-codes/captcha",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"verify-codes",
+										"captcha"
+									]
+								},
+								"description": "图片验证码"
+							},
+							"response": []
+						}
+					],
+					"description": "验证码"
+				},
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "login/refresh-token",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDc5IiwidXNlcl9uYW1lIjoiR0dfYm95IiwiZXhwaXJlX3RpbWUiOjE2OTU3MTA1OTUsImV4cCI6MTY5NTcxMDU5NSwiaWF0IjoxNjkwNTI2NTk1LCJpc3MiOiJHZW50bGVtYW4iLCJuYmYiOjE2OTA1MjY1OTV9.jYTd9-2cKi311u-2jm50oTFHGs7ZUtmhenv026_HGHk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/auth/login/refresh-token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"login",
+										"refresh-token"
+									]
+								},
+								"description": "刷新token\n"
+							},
+							"response": []
+						},
+						{
+							"name": "login/using-password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"login_id\":\"630591905\",\r\n    \"password\":\"123456\",\r\n    \"captcha_answer\":\"737370\",\r\n    \"captcha_id\":\"sRNC4hzbVr7auuUxOhKz\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/auth/login/using-password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"login",
+										"using-password"
+									]
+								},
+								"description": "使用用户名或者密码登录"
+							},
+							"response": []
+						}
+					],
+					"description": "登录"
+				}
+			],
+			"description": "权限相关"
+		}
+	]
+}

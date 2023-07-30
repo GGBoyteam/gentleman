@@ -14,7 +14,7 @@ func IsEmailExist(email string) bool {
 // IsQQExist 判断 QQ 已被注册
 func IsQQExist(qq string) bool {
 	var count int64
-	database.DB.Model(User{}).Where("email = ?", qq).Count(&count)
+	database.DB.Model(User{}).Where("qq = ?", qq).Count(&count)
 	return count > 0
 }
 

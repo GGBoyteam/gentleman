@@ -80,12 +80,10 @@ func RegisterAPIRoutes(r *gin.Engine) {
 			authGroup.POST("/signup/using-email", middlewares.GuestJWT(), suc.SignupUsingEmail)
 			authGroup.POST("/signup/qq/exist", middlewares.GuestJWT(), middlewares.LimitPerRoute("60-H"), suc.IsQQExist)
 			authGroup.POST("/signup/using-qq", middlewares.GuestJWT(), suc.SignupUsingQQ)
-			authGroup.GET("/isLogin", middlewares.GuestJWT(), suc.IsLogin)
 
 			// 发送验证码
 			vcc := new(auth.VerifyCodeController)
 			authGroup.POST("/verify-codes/email", vcc.SendUsingEmail)
-			authGroup.POST("/verify-codes/qq", vcc.SendUsingQQ)
 			// 图片验证码,加限流
 			authGroup.POST("/verify-codes/captcha", middlewares.LimitPerRoute("50-H"), vcc.ShowCaptcha)
 

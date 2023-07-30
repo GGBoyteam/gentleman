@@ -58,11 +58,11 @@ func (sc *SignupController) SignupUsingEmail(c *gin.Context) {
 // IsQQExist 检测QQ是否已注册
 func (sc *SignupController) IsQQExist(c *gin.Context) {
 	request := requests.SignupQQExistRequest{}
-	if ok := requests.Validate(c, &request, requests.SignupEmailExist); !ok {
+	if ok := requests.Validate(c, &request, requests.SignupQQExist); !ok {
 		return
 	}
 	response.JSON(c, gin.H{
-		"exist": user.IsEmailExist(request.QQ),
+		"exist": user.IsQQExist(request.QQ),
 	})
 }
 
@@ -92,15 +92,5 @@ func (sc *SignupController) SignupUsingQQ(c *gin.Context) {
 		})
 	} else {
 		response.Abort500(c, "创建用户失败，请稍后尝试~")
-	}
-}
-
-func (sc *SignupController) IsLogin(c *gin.Context) {
-	newJwt := jwt.NewJWT()
-	claims, err := newJwt.ParserToken(c)
-	if err != nil {
-		response.Abort500(c, "用户未登录")
-	} else {
-		c.Set("username", claims.UserName)
 	}
 }
